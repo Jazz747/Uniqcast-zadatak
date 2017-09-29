@@ -1,6 +1,7 @@
 var jwt = ''
 var kanali = []
-var channel = ''
+var channelId = ''
+
 function logIn(result) {
     var userName = usernameInput.text
     var pin = pinInput.text
@@ -43,13 +44,22 @@ function getChannels() {
             if (http.status == 200) {
                 console.log("proslo")
                 kanali = JSON.parse(http.responseText)
-                for (var key in kanali) {
-                    var name = kanali[key].name
-                    var url = kanali[key].url
-                    var id = kanali[key].id
-                    listaModel.append({"name": name, "url": url, "id": id});
+                console.log(kanali.length)
+                if (kanali.length > 0) {
+                    for (var key in kanali) {
+                        noChannelsText.text = ""
+                        var name = kanali[key].name
+                        var url = kanali[key].url
+                        var id = kanali[key].id
+                        listaModel.append({"name": name, "url": url, "id": id});
+                        loading.running = false
+                    }
+                } else {
+                    noChannelsText.text = "No channels"
                     loading.running = false
                 }
+
+
             } else if (http.status == 403){
                 console.log("error: " + http.status + http.responseText)
             } else if (http.status == 400) {
@@ -91,11 +101,12 @@ function addChannel(name, channelUrl) {
     http.send(JSON.stringify(params));
 }
 
-function editChannel(name, url, id) {
+function editChannel(name, url) {
     loading.running = true
+    print(name, url, channelId, jwt)
 
     var http = new XMLHttpRequest;
-    var httpUrl = "http://176.31.182.158:3001/channels/" + id;
+    var httpUrl = "http://176.31.182.158:3001/channels/" + channelId;
     var params = {"name": name, "url": url};
 
     http.open("PUT", httpUrl, true);
@@ -105,8 +116,10 @@ function editChannel(name, url, id) {
     http.onreadystatechange = function() {
          if (http.readyState == 4) {
              if (http.status == 200) {
-                 console.log("kanal updejtan")
+                 editChannelWindow.close()
                  loading.running = false
+                 nameEdit.text = ""
+                 urlEdit.text = ""
                  listaModel.clear()
                  getChannels()
              } else if (http.status == 403){
@@ -118,16 +131,23 @@ function editChannel(name, url, id) {
              }
          }
      }
-    http.send();
+    http.send(JSON.stringify(params));
 }
 
-function saveParemeters(id) {
-    channel = id
+function saveParemeters( id) {
+    channelId = id;
 }
 
 function refreshChannels() {
     listaModel.clear()
     getChannels()
+}
+
+function logOut() {
+    rectangle.state = "LOGIN"
+    usernameInput.text = ""
+    pinInput.text = ""
+    listaModel.clear()
 }
 
 function deleteChannel(id) {

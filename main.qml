@@ -193,6 +193,16 @@ Window {
                 model: listaModel
                 delegate: delegat
 
+                Text {
+                    text: ""
+                    id: noChannelsText
+                    anchors.top: parent
+                    anchors.topMargin: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: 20
+
+                }
+
                 BusyIndicator {
                     id: loading
                     x: 340
@@ -297,6 +307,7 @@ Window {
                             anchors.left: parent.left
                             anchors.leftMargin: 10
                             onClicked: function() {
+                                Methods.saveParemeters(channelId.text)
                                 editChannelWindow.open()
                             }
                         }
@@ -364,6 +375,18 @@ Window {
                 anchors.right: addChannelButton.left
                 anchors.rightMargin: 25
                 onClicked: Methods.refreshChannels()
+            }
+
+            Button {
+                id: logOutButton
+                x: 391
+                y: 12
+                text: qsTr("Log out")
+                font.pointSize: 10
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: refreshChannelsButton.left
+                anchors.rightMargin: 25
+                onClicked: Methods.logOut()
             }
         }
     }
@@ -484,6 +507,7 @@ Window {
         height: 300
         minimumHeight: 300
         maximumHeight: 300
+        property Window mjau:window
 
         function open(){
             visible = true
@@ -569,11 +593,10 @@ Window {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 20
                 onClicked: function() {
-                    console.log(mjau)
                     if (nameEdit.text.length == 0)
                         warningText2.text = 'Channel name must not be empty.'
                     else {
-                        Methods.editChannel(nameEdit.text, urlEdit.text, channelId.text)
+                        Methods.editChannel(nameEdit.text, urlEdit.text)
                         addNewChannelButton.text = 'Editing channel...'
                     }
                 }
