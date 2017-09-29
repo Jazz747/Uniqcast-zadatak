@@ -185,13 +185,16 @@ Window {
 
             ListView {
                 id: listView
-                anchors.topMargin: 30
+                anchors.topMargin: 40
                 anchors.bottomMargin: 10
                 anchors.leftMargin: 10
                 anchors.rightMargin: 10
                 anchors.fill: parent
                 model: listaModel
                 delegate: delegat
+
+
+
 
                 Text {
                     text: ""
@@ -488,14 +491,13 @@ Window {
                     if (nameInput.text.length == 0)
                         warningText.text = 'Channel name must not be empty.'
                     else {
+                        warningText.text = ''
                         Methods.addChannel(nameInput.text, urlInput.text)
                         addNewChannelButton.text = 'Adding channel...'
                     }
                 }
             }
         }
-
-
     }
 
     Window {
@@ -596,6 +598,7 @@ Window {
                     if (nameEdit.text.length == 0)
                         warningText2.text = 'Channel name must not be empty.'
                     else {
+                        warningText2.text = ''
                         Methods.editChannel(nameEdit.text, urlEdit.text)
                         addNewChannelButton.text = 'Editing channel...'
                     }

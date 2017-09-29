@@ -18,7 +18,6 @@ RC_ICONS += uniqcast.ico
 RESOURCES += qml.qrc
 DISTFILES += \
     main.qml \
-    mainForm.ui.qml \
     methods.js
 
 # Additional import path used to resolve QML modules in Qt Creator's code model

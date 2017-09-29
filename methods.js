@@ -44,7 +44,6 @@ function getChannels() {
             if (http.status == 200) {
                 console.log("proslo")
                 kanali = JSON.parse(http.responseText)
-                console.log(kanali.length)
                 if (kanali.length > 0) {
                     for (var key in kanali) {
                         noChannelsText.text = ""
@@ -58,7 +57,6 @@ function getChannels() {
                     noChannelsText.text = "No channels"
                     loading.running = false
                 }
-
 
             } else if (http.status == 403){
                 console.log("error: " + http.status + http.responseText)
